@@ -1,0 +1,11 @@
+{
+  "package": "oats.jira",
+  "version": "1.0.0",
+  "description": "Official OATS tasks integration for Jira using Atlassian's acli command-line interface.",
+  "compatibility": {
+    "oats": ">=0.19.0"
+  },
+  "capabilities": [
+    "capabilities/oats-jira"
+  ]
+}

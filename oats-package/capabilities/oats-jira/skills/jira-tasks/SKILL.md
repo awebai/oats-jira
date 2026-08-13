@@ -1,7 +1,7 @@
 ---
 name: jira-tasks
 description: >-
-  Jira task tracking and agent roster protocol for OAS agents. Use when you
+  Jira task tracking and agent roster protocol for OATS agents. Use when you
   are an agent instance working an epic, story, or task in Jira: reading your
   assignment, finding your work queue, joining or leaving an epic's Agent
   Roster, posting progress or handoff comments, transitioning ticket status,
@@ -29,12 +29,12 @@ tracking and the agent roster. Agents do not know about projects — you know
 
 ## Site and project (from your deployment, never hardcoded)
 
-Your Jira **site** and **project key** come from the deployment's OAS config
-(`capabilities.oas.jira.<target>.settings: { site, project }`). Find them, in order:
+Your Jira **site** and **project key** come from the deployment's OATS config
+(`capabilities.oats.jira.<target>.settings: { site, project }`). Find them, in order:
 
 1. Your `TASK.md` briefing — the spawn hook writes a
    `Tasks: Jira — project <KEY> on <site>` line.
-2. `oas doctor --json` from your work tree (the tasks layer's settings).
+2. `oats doctor --json` from your work tree (the tasks layer's settings).
 3. Ask your human.
 
 Below, `<PROJECT>` means that project key. If site or project are unset,

@@ -4,8 +4,8 @@ import { join, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-const ROOT = resolve(fileURLToPath(new URL("../oas-package", import.meta.url)));
-const HOOK = join(ROOT, "capabilities", "oas-jira", "bin", "oas-jira.mjs");
+const ROOT = resolve(fileURLToPath(new URL("../oats-package", import.meta.url)));
+const HOOK = join(ROOT, "capabilities", "oats-jira", "bin", "oats-jira.mjs");
 
 function run(args = [], env = {}) {
   return new Promise((done) => {
@@ -23,9 +23,9 @@ function run(args = [], env = {}) {
 
 test("spawn reports Jira identity and complete deployment settings", async () => {
   const result = await run(["spawn"], {
-    OAS_EVENT: "spawn",
-    OAS_INSTANCE: "developer-api-1",
-    OAS_SETTINGS: JSON.stringify({ site: "example.atlassian.net", project: "PROJ" }),
+    OATS_EVENT: "spawn",
+    OATS_INSTANCE: "developer-api-1",
+    OATS_SETTINGS: JSON.stringify({ site: "example.atlassian.net", project: "PROJ" }),
   });
   assert.equal(result.code, 0, result.stderr);
   const payload = JSON.parse(result.stdout);
@@ -41,9 +41,9 @@ test("spawn reports Jira identity and complete deployment settings", async () =>
 
 test("spawn warns when deployment settings are incomplete", async () => {
   const result = await run(["spawn"], {
-    OAS_EVENT: "spawn",
-    OAS_INSTANCE: "developer-api-1",
-    OAS_SETTINGS: JSON.stringify({ project: "PROJ" }),
+    OATS_EVENT: "spawn",
+    OATS_INSTANCE: "developer-api-1",
+    OATS_SETTINGS: JSON.stringify({ project: "PROJ" }),
   });
   assert.equal(result.code, 0, result.stderr);
   const payload = JSON.parse(result.stdout);
@@ -53,7 +53,7 @@ test("spawn warns when deployment settings are incomplete", async () => {
 });
 
 test("unknown lifecycle events degrade to a hook warning", async () => {
-  const result = await run(["retire"], { OAS_EVENT: "retire", OAS_SETTINGS: "{}" });
+  const result = await run(["retire"], { OATS_EVENT: "retire", OATS_SETTINGS: "{}" });
   assert.equal(result.code, 0, result.stderr);
   assert.match(JSON.parse(result.stdout).warning, /unknown event "retire"/);
 });
