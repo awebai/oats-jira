@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "owner": "ed495570-5cd4-4328-b820-7f087ec96ca0",
+  "owns": [
+    "oats/oats-jira-expert"
+  ],
+  "reads": [
+    "oats/integrations-expert",
+    "oats/oats-expert",
+    "oats/oats-kernel-expert"
+  ]
+}
