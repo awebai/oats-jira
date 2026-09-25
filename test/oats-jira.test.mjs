@@ -50,6 +50,10 @@ test("spawn warns when deployment settings are incomplete", async () => {
   assert.deepEqual(payload.meta, { label: "agent-developer-api-1", project: "PROJ" });
   assert.match(payload.brief, /site unset/);
   assert.match(payload.warning, /site: unset, project: PROJ/);
+  // The workspace model's homes for the settings, never the removed oats-config.yaml.
+  assert.match(payload.warning, /tasks: \{ site, project \} in the soul's soul\.yaml/);
+  assert.match(payload.warning, /settings\.oats\.jira\.\{site,project\} in the deployment's oats-local\.yaml/);
+  assert.doesNotMatch(payload.warning, /oats-config/);
 });
 
 test("unknown lifecycle events degrade to a hook warning", async () => {

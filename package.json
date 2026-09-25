@@ -1,6 +1,6 @@
 {
   "name": "@awebai/oats-jira",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Official OATS tasks integration for Jira using Atlassian's acli command-line interface.",
   "license": "MIT",
   "type": "module",
