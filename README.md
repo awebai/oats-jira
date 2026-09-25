@@ -15,40 +15,40 @@ acli jira auth login --web   # human-run only, when status says unauthorized
 
 Installation guide: <https://developer.atlassian.com/cloud/acli/guides/install-acli/>
 
-The amended package schema and OATS `>=0.19.0` compatibility floor are frozen; see [`SCHEMA-STATUS.md`](SCHEMA-STATUS.md) for the remaining released-kernel fixture gate.
+Requires OATS `>=0.26.0` (the workspace model). The vendored schemas are
+described in [`SCHEMA-STATUS.md`](SCHEMA-STATUS.md).
 
-## Acquire and activate
+## Declare and select
 
-Acquisition does not activate the capability. After an official release exists:
-
-```bash
-oats install oats.jira --dir /path/to/scope
-oats trust oats.jira --dir /path/to/scope
-oats use oats.jira --global --dir /path/to/scope
-oats doctor /path/to/scope --soul <soul-name>
-```
-
-A pinned Git source may be used after publication:
-
-```bash
-oats install git:https://github.com/awebai/oats-jira.git@v1.0.0 --dir /path/to/scope
-```
-
-The spawn hook is executable, so it needs explicit per-capability trust tied to the exact package integrity.
-
-Configure deployment-owned targeting and settings in `oats-config.yaml`, not in this package:
+Declaring the package in the workspace file's `packages:` is the decision to
+trust it — its spawn hook runs on every machine that spawns a soul using it —
+and `oats sync` locks it to an exact commit and integrity. Nothing is installed.
 
 ```yaml
+# oats-workspace.yaml
+packages:
+  oats.jira: v1.0.1
+defaults:
+  tasks: { oats.jira: { from: package } }   # every soul's tasks slot
+```
+
+A soul can instead select it for itself and carry its own settings:
+
+```yaml
+# souls/<name>/soul.yaml
 capabilities:
-  layers:
-    tasks:
-      capability: oats.jira
-      from: installed
-      global:
-        enabled: true
-        settings:
-          site: example.atlassian.net
-          project: PROJ
+  oats.jira: { from: package }              # fills the tasks slot
+tasks: { site: example.atlassian.net, project: PROJ }
+```
+
+`site` and `project` have three homes: the soul's `tasks:` payload when they
+are true of every instance of the soul; the deployment's `oats-local.yaml`
+`settings.oats.jira.{site,project}` when they are a fact about this machine;
+`oats spawn <soul> --provider oats.jira project=PROJ` for one spawn. Then:
+
+```bash
+oats sync --dir <deployment>
+oats spawn <soul> --preview    # shows the merged settings.oats.jira
 ```
 
 Load the `jira-tasks` skill before reading or changing tickets. Its commands and identity/state rules are the package's supported protocol.
@@ -59,4 +59,4 @@ Load the `jira-tasks` skill before reading or changing tickets. Its commands and
 npm test
 ```
 
-This validates both manifests, checks resource containment, and smoke-tests the advisory hook. The full acquire → lock → trust → activate → spawn probe remains pending released OATS 0.19.0 consumer fixtures.
+This validates both manifests, checks resource containment, and smoke-tests the advisory hook.
