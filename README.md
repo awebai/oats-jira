@@ -51,7 +51,7 @@ oats sync --dir <deployment>
 oats spawn <soul> --preview    # shows the merged settings.oats.jira
 ```
 
-Load the `jira-tasks` skill before reading or changing tickets. Its commands and identity/state rules are the package's supported protocol.
+Load `/jira-tasks` before reading or changing tickets. Its commands and identity/state rules are the package's supported protocol.
 
 ## Development
 
